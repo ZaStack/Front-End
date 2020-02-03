@@ -58,7 +58,7 @@ export default function SignUp() {
                 id="username"
                 label="Userame"
                 name="username"
-                autoComplete="uname"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
