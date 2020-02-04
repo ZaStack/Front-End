@@ -33,17 +33,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignUp(props) {
+const SignUp = props => {
   const classes = useStyles();
+
   const FormSubmit = (values, { setSubmitting, resetForm }) => {
     console.log(values);
     axios
-      .post("https://block-party-calendar.herokuapp.com/api/users/register")
+      .post(
+        "https://block-party-calendar.herokuapp.com/api/users/register",
+        values
+      )
       .then(response => {
-        console.log(props);
+        console.log(response);
         resetForm({});
       })
-      .catch(error => console.log(error.response, "Didn't work"))
+      .catch(error => console.log("Data didn't go anywhere", error))
       .finally(() => {
         setSubmitting(false);
         props.history.push(`/signin`);
@@ -58,11 +62,18 @@ export default function SignUp(props) {
           Sign up
         </Typography>
         <Formik
-          initialValues={{ email: "", username: "", password: "" }}
+          initialValues={{
+            username: "",
+            password: "",
+            email: "",
+            streetAddress: "",
+            city: "",
+            zipcode: ""
+          }}
           validationSchema={SignupSchema}
           onSubmit={FormSubmit}
         >
-          <form className={classes.form} noValidate>
+          <form className={classes.form}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -72,7 +83,7 @@ export default function SignUp(props) {
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
+                  // component={customInput}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -81,9 +92,9 @@ export default function SignUp(props) {
                   required
                   fullWidth
                   id="username"
-                  label="Userame"
+                  label="Username"
                   name="username"
-                  autoComplete="username"
+                  // component={customInput}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -95,7 +106,43 @@ export default function SignUp(props) {
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="current-password"
+                  // component={customInput}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="streetAddress"
+                  label="Street Address"
+                  type="streetAddress"
+                  id="streetAddress"
+                  // component={customInput}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="city"
+                  label="City"
+                  type="city"
+                  id="city"
+                  // component={customInput}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="zipcode"
+                  label="Zipcode"
+                  type="zipcode"
+                  id="zipcode"
+                  // component={customInput}
                 />
               </Grid>
             </Grid>
@@ -106,6 +153,7 @@ export default function SignUp(props) {
               color="primary"
               className={classes.submit}
               disabled={props.isSubmitting}
+              onClick={() => FormSubmit}
             >
               {props.isSubmitting ? "Creating..." : "Sign Up"}
             </Button>
@@ -115,18 +163,15 @@ export default function SignUp(props) {
       </div>
     </Container>
   );
-}
+};
 
 // const customInput = ({ field, form: { touched, errors }, ...props }) => (
 //   <div>
-//     <Input
+//     <TextField
 //       invalid={!!(touched[field.name] && errors[field.name])}
 //       {...field}
 //       {...props}
 //     />
-//     {touched[field.name] && errors[field.name] && (
-//       <FormFeedback>{errors[field.name]}</FormFeedback>
-//     )}
 //   </div>
 // );
 
@@ -143,3 +188,5 @@ const SignupSchema = Yup.object().shape({
     .max(20, "Password cannot exceed 20 characters")
     .required("Password is Required")
 });
+
+export default SignUp;
