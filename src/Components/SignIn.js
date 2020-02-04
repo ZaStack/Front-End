@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+
+const axios = require("axios");
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -22,12 +24,41 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
+    color: "#F8F7DC",
+    backgroundColor: "#FF7518",
+    borderRadius: "10px"
   }
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
+  const [creds, setCreds] = useState({
+    username: "",
+    password: ""
+  });
+  console.log("entryHandler", creds);
+
+  const entryHandler = e => {
+    let value = e.target.value;
+    setCreds({
+      ...creds,
+      [e.target.name]: value
+    });
+  };
+
+  const FormSubmit = e => {
+    e.preventdefault();
+    axios
+      .post("https://block-party-calendar.herokuapp.com/api/users/login")
+      .then(response => {
+        console.log("login", creds);
+      })
+      .catch(error => {
+        console.log("login Error", error);
+        return <h3>Username/Password Incorrect</h3>;
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -36,7 +67,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={FormSubmit} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -46,6 +77,8 @@ export default function SignIn() {
             label="Username"
             name="username"
             autoComplete="username"
+            value={creds.username}
+            onChange={entryHandler}
             autoFocus
           />
           <TextField
@@ -58,6 +91,8 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={creds.password}
+            onChange={entryHandler}
           />
           <Button
             type="submit"
