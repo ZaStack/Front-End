@@ -1,12 +1,13 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-
+import {
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Typography,
+  Container
+} from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import axios from "axios";
@@ -52,7 +53,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
+    borderRadius: 10,
+    color: theme.palette.secondary.main
   }
 }));
 
@@ -101,8 +104,8 @@ const SignUp = () => {
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
-                    // id="email"
-                    label="Email"
+                    id="email"
+                    label="Email *"
                     autoFocus
                     helperText={
                       errors.email && touched.email ? errors.email : null
@@ -115,8 +118,8 @@ const SignUp = () => {
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
-                    // id="username"
-                    label="Username"
+                    id="username"
+                    label="Username *"
                     name="username"
                     autoComplete="lname"
                     helperText={
@@ -132,8 +135,9 @@ const SignUp = () => {
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
-                    // id="password"
-                    label="Password"
+                    id="password"
+                    type="password"
+                    label="Password *"
                     name="password"
                     autoComplete="password"
                     helperText={
@@ -150,9 +154,9 @@ const SignUp = () => {
                     fullWidth
                     onChange={handleChange}
                     name="streetAddress"
-                    label="Street Address"
+                    label="Street Address *"
                     type="streetAddress"
-                    // id="streetAddress"
+                    id="streetAddress"
                     autoComplete="current-streetAddress"
                     helperText={
                       errors.streetAddress && touched.streetAddress
@@ -168,9 +172,9 @@ const SignUp = () => {
                     fullWidth
                     onChange={handleChange}
                     name="city"
-                    label="City"
+                    label="City *"
                     type="city"
-                    // id="city"
+                    id="city"
                     autoComplete="current-city"
                     helperText={
                       errors.city && touched.city ? errors.city : null
@@ -184,9 +188,9 @@ const SignUp = () => {
                     fullWidth
                     onChange={handleChange}
                     name="zipcode"
-                    label="Zipcode"
+                    label="Zipcode *"
                     type="zipcode"
-                    // id="zipcode"
+                    id="zipcode"
                     autoComplete="current-zipcode"
                     helperText={
                       errors.zipcode && touched.zipcode ? errors.zipcode : null
@@ -202,7 +206,8 @@ const SignUp = () => {
                     name="businessName"
                     label="Business Name"
                     type="businessName"
-                    // id="businessName"
+                    id="businessName"
+                    placeholder="Optional"
                     autoComplete="current-businessName"
                     helperText={
                       errors.businessName && touched.businessName

@@ -36,15 +36,16 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    margin: theme.spacing(1)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
+    color: theme.palette.secondary.main,
+    borderRadius: 10
   }
 }));
 
@@ -86,7 +87,7 @@ const SignIn = () => {
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
-                    // id="username"
+                    id="username"
                     label="Username"
                     name="username"
                     autoComplete="lname"
@@ -103,7 +104,8 @@ const SignIn = () => {
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
-                    // id="password"
+                    id="password"
+                    type="password"
                     label="Password"
                     name="password"
                     autoComplete="password"
