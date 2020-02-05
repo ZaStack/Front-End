@@ -7,7 +7,8 @@ import {
   Typography,
   IconButton,
   Menu,
-  MenuItem
+  MenuItem,
+  Link
 } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
@@ -62,10 +63,21 @@ const Header = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Sign In</MenuItem>
-            <MenuItem onClick={handleClose}>Sign Up</MenuItem>
-            <MenuItem onClick={handleClose}>Sign Out</MenuItem>
-            <MenuItem onClick={handleClose}>Account</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/">Sign In</Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="/signup">Sign Up</Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="#">Sign Out</Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="#">Account</Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link href="#">Event List</Link>
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

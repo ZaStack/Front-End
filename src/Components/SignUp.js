@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
@@ -20,6 +21,7 @@ let SignupSchema = yup.object().shape({
   username: yup
     .string()
     .min(4, "Username is too short.")
+    .max(12, "Username is too long")
     .required("This field is required"),
   password: yup
     .string()
@@ -61,6 +63,7 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = () => {
   const classes = useStyles();
+  const [toNext, setToNext] = useState(false);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,12 +92,14 @@ const SignUp = () => {
               )
               .then(response => {
                 console.log("POST response", response);
+                setToNext(true);
               })
               .catch(err => console.log("Submit failure", err));
           }}
         >
           {({ errors, handleChange, touched }) => (
             <Form className={classes.form}>
+              {toNext ? <Redirect to="/" /> : null}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
