@@ -1,20 +1,42 @@
 import React from "react";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+
+import { Formik, Form } from "formik";
+import * as yup from "yup";
 import axios from "axios";
-import {
-  Button,
-  makeStyles,
-  CssBaseline,
-  TextField,
-  Grid,
-  Typography,
-  Container,
-  AppBar
-} from "@material-ui/core";
-import Header from "./Header";
+
+let SignupSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email()
+    .required("This field is required."),
+  username: yup
+    .string()
+    .min(4, "Username is too short.")
+    .required("This field is required"),
+  password: yup
+    .string()
+    .min(6, "Password is too short.")
+    .max(20, "Password is too long.")
+    .required("This field is required."),
+  streetAddress: yup.string().required("This field is required."),
+  city: yup.string().required("This field is required."),
+  zipcode: yup.string().required("This field is required."),
+  businessName: yup.string()
+});
 
 const useStyles = makeStyles(theme => ({
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.common.white
+    }
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -30,39 +52,15 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3)
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-    color: "#F8F7DC",
-    backgroundColor: "#FF7518",
-    borderRadius: "10px"
+    margin: theme.spacing(3, 0, 2)
   }
 }));
 
-const SignUp = props => {
+const SignUp = () => {
   const classes = useStyles();
-  // const [users, setUsers] = useState([]);
-
-  const FormSubmit = (values, { resetForm }) => {
-    console.log(values);
-    axios
-      .post(
-        "https://block-party-calendar.herokuapp.com/api/users/register",
-        values
-      )
-      .then(response => {
-        console.log("Success", response);
-        // console.log("Users", users);
-        resetForm({});
-      })
-      .catch(error => console.log("Data didn't go anywhere", error));
-    // .finally(() => {
-    //   setSubmitting(false);
-    //   props.history.push(`/signin`);
-    // });
-  };
 
   return (
     <Container component="main" maxWidth="xs">
-      <Header marginBottom="20px" />
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
@@ -75,88 +73,142 @@ const SignUp = props => {
             email: "",
             streetAddress: "",
             city: "",
-            zipcode: ""
+            zipcode: "",
+            businessName: ""
           }}
           validationSchema={SignupSchema}
-          onSubmit={FormSubmit}
+          onSubmit={values => {
+            console.log("Values", values);
+            axios
+              .post(
+                "https://block-party-calendar.herokuapp.com/api/users/register",
+                values
+              )
+              .then(response => {
+                console.log("POST response", response);
+              })
+              .catch(err => console.log("Submit failure", err));
+          }}
         >
-          {props => (
-            <form className={classes.form}>
+          {({ errors, handleChange, touched }) => (
+            <Form className={classes.form}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    variant="outlined"
-                    required
-                    fullWidth
-                    // id="email"
-                    label="Email Address"
+                    error={errors.email && touched.email}
+                    autoComplete="email"
                     name="email"
-
-                    // component={customInput}
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    // id="email"
+                    label="Email"
+                    autoFocus
+                    helperText={
+                      errors.email && touched.email ? errors.email : null
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={errors.username && touched.username}
                     variant="outlined"
-                    required
                     fullWidth
+                    onChange={handleChange}
                     // id="username"
                     label="Username"
                     name="username"
-
-                    // component={customInput}
+                    autoComplete="lname"
+                    helperText={
+                      errors.username && touched.username
+                        ? errors.username
+                        : null
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={errors.password && touched.password}
                     variant="outlined"
-                    required
                     fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
+                    onChange={handleChange}
                     // id="password"
-
-                    // component={customInput}
+                    label="Password"
+                    name="password"
+                    autoComplete="password"
+                    helperText={
+                      errors.password && touched.password
+                        ? errors.password
+                        : null
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={errors.streetAddress && touched.streetAddress}
                     variant="outlined"
-                    required
                     fullWidth
+                    onChange={handleChange}
                     name="streetAddress"
                     label="Street Address"
                     type="streetAddress"
                     // id="streetAddress"
-
-                    // component={customInput}
+                    autoComplete="current-streetAddress"
+                    helperText={
+                      errors.streetAddress && touched.streetAddress
+                        ? errors.streetAddress
+                        : null
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={errors.city && touched.city}
                     variant="outlined"
-                    required
                     fullWidth
+                    onChange={handleChange}
                     name="city"
                     label="City"
                     type="city"
                     // id="city"
-
-                    // component={customInput}
+                    autoComplete="current-city"
+                    helperText={
+                      errors.city && touched.city ? errors.city : null
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={errors.zipcode && touched.zipcode}
                     variant="outlined"
-                    required
                     fullWidth
+                    onChange={handleChange}
                     name="zipcode"
                     label="Zipcode"
                     type="zipcode"
                     // id="zipcode"
-
-                    // component={customInput}
+                    autoComplete="current-zipcode"
+                    helperText={
+                      errors.zipcode && touched.zipcode ? errors.zipcode : null
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error={errors.businessName && touched.businessName}
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    name="businessName"
+                    label="Business Name"
+                    type="businessName"
+                    // id="businessName"
+                    autoComplete="current-businessName"
+                    helperText={
+                      errors.businessName && touched.businessName
+                        ? errors.businessName
+                        : null
+                    }
                   />
                 </Grid>
               </Grid>
@@ -166,42 +218,15 @@ const SignUp = props => {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                // disabled={props.isSubmitting}
-                // onClick={() => FormSubmit}
               >
-                {props.isSubmitting ? "Creating..." : "Sign Up"}
+                Sign Up
               </Button>
-              <Grid container justify="flex-end"></Grid>
-            </form>
+            </Form>
           )}
         </Formik>
       </div>
     </Container>
   );
 };
-
-// const customInput = ({ field, form: { touched, errors }, ...props }) => (
-//   <div>
-//     <TextField
-//       invalid={!!(touched[field.name] && errors[field.name])}
-//       {...field}
-//       {...props}
-//     />
-//   </div>
-// );
-
-const SignupSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  username: Yup.string()
-    .min(3, "Username must be at least 3 characters")
-    .max(14, "Username cannot exceed 14 characters")
-    .required("Username is required"),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .max(20, "Password cannot exceed 20 characters")
-    .required("Password is Required")
-});
 
 export default SignUp;
