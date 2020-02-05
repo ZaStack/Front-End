@@ -2,13 +2,17 @@ import React from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import {
+  Button,
+  makeStyles,
+  CssBaseline,
+  TextField,
+  Grid,
+  Typography,
+  Container,
+  AppBar
+} from "@material-ui/core";
+import Header from "./Header";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -35,8 +39,9 @@ const useStyles = makeStyles(theme => ({
 
 const SignUp = props => {
   const classes = useStyles();
+  // const [users, setUsers] = useState([]);
 
-  const FormSubmit = (values, { setSubmitting, resetForm }) => {
+  const FormSubmit = (values, { resetForm }) => {
     console.log(values);
     axios
       .post(
@@ -44,18 +49,20 @@ const SignUp = props => {
         values
       )
       .then(response => {
-        console.log(response);
+        console.log("Success", response);
+        // console.log("Users", users);
         resetForm({});
       })
-      .catch(error => console.log("Data didn't go anywhere", error))
-      .finally(() => {
-        setSubmitting(false);
-        props.history.push(`/signin`);
-      });
+      .catch(error => console.log("Data didn't go anywhere", error));
+    // .finally(() => {
+    //   setSubmitting(false);
+    //   props.history.push(`/signin`);
+    // });
   };
 
   return (
     <Container component="main" maxWidth="xs">
+      <Header marginBottom="20px" />
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
@@ -73,92 +80,100 @@ const SignUp = props => {
           validationSchema={SignupSchema}
           onSubmit={FormSubmit}
         >
-          <form className={classes.form}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  // component={customInput}
-                />
+          {props => (
+            <form className={classes.form}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    // id="email"
+                    label="Email Address"
+                    name="email"
+
+                    // component={customInput}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    // id="username"
+                    label="Username"
+                    name="username"
+
+                    // component={customInput}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    // id="password"
+
+                    // component={customInput}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="streetAddress"
+                    label="Street Address"
+                    type="streetAddress"
+                    // id="streetAddress"
+
+                    // component={customInput}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="city"
+                    label="City"
+                    type="city"
+                    // id="city"
+
+                    // component={customInput}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="zipcode"
+                    label="Zipcode"
+                    type="zipcode"
+                    // id="zipcode"
+
+                    // component={customInput}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  // component={customInput}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  // component={customInput}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="streetAddress"
-                  label="Street Address"
-                  type="streetAddress"
-                  id="streetAddress"
-                  // component={customInput}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="city"
-                  label="City"
-                  type="city"
-                  id="city"
-                  // component={customInput}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="zipcode"
-                  label="Zipcode"
-                  type="zipcode"
-                  id="zipcode"
-                  // component={customInput}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              disabled={props.isSubmitting}
-              onClick={() => FormSubmit}
-            >
-              {props.isSubmitting ? "Creating..." : "Sign Up"}
-            </Button>
-            <Grid container justify="flex-end"></Grid>
-          </form>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                // disabled={props.isSubmitting}
+                // onClick={() => FormSubmit}
+              >
+                {props.isSubmitting ? "Creating..." : "Sign Up"}
+              </Button>
+              <Grid container justify="flex-end"></Grid>
+            </form>
+          )}
         </Formik>
       </div>
     </Container>

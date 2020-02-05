@@ -52,7 +52,7 @@ export default function SignIn(props) {
     axios
       .post("https://block-party-calendar.herokuapp.com/api/users/login")
       .then(response => {
-        console.log("login", creds);
+        console.log("login", response);
       })
       .catch(error => {
         console.log("login Error", error);
