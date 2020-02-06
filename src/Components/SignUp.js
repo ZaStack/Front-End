@@ -58,6 +58,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
     borderRadius: 10,
     color: theme.palette.secondary.main
+  },
+  input: {
+    backgroundColor: theme.palette.info.main
   }
 }));
 
@@ -72,6 +75,7 @@ const SignUp = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        <Typography>Plese enter your information below to sign up.</Typography>
         <Formik
           initialValues={{
             username: "",
@@ -99,11 +103,12 @@ const SignUp = () => {
         >
           {({ errors, handleChange, touched }) => (
             <Form className={classes.form}>
-              {toNext ? <Redirect to="/" /> : null}
+              {toNext ? <Redirect to="/login" /> : null}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
                     error={errors.email && touched.email}
+                    className={classes.input}
                     autoComplete="email"
                     name="email"
                     variant="outlined"
@@ -120,6 +125,7 @@ const SignUp = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.username && touched.username}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -137,6 +143,7 @@ const SignUp = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.password && touched.password}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -155,6 +162,7 @@ const SignUp = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.streetAddress && touched.streetAddress}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -173,6 +181,7 @@ const SignUp = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.city && touched.city}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -189,6 +198,7 @@ const SignUp = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.zipcode && touched.zipcode}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -205,6 +215,7 @@ const SignUp = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.businessName && touched.businessName}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
