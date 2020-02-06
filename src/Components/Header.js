@@ -21,10 +21,12 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     textAlign: "left",
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
+    marginLeft: 16
   },
   hamburger: {
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
+    marginRight: 16
   }
 }));
 
@@ -43,7 +45,7 @@ const Header = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h5" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             BlockClub Calendar
           </Typography>
           <IconButton
@@ -76,7 +78,7 @@ const Header = () => {
               <Link href="#">Account</Link>
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Link href="#">Event List</Link>
+              <Link href="/eventlist">Event List</Link>
             </MenuItem>
           </Menu>
         </Toolbar>

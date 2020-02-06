@@ -1,11 +1,14 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import {
+  Container,
+  Typography,
+  Grid,
+  TextField,
+  CssBaseline,
+  Button
+} from "@material-ui/core";
 
 import { Formik, Form } from "formik";
 import * as yup from "yup";
@@ -46,19 +49,27 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
     color: theme.palette.secondary.main,
     borderRadius: 10
+  },
+  input: {
+    backgroundColor: theme.palette.info.main
+  },
+  pageTitle: {
+    marginTop: 16
   }
 }));
 
 const SignIn = () => {
   const classes = useStyles();
+  const [toNext, setToNext] = useState(false);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Typography variant="h4" className={classes.pageTitle}>
+        Login Page
+      </Typography>
       <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Sign In
-        </Typography>
+        <Typography>Please enter your information below to login.</Typography>
         <Formik
           initialValues={{
             username: "",
@@ -69,21 +80,24 @@ const SignIn = () => {
             console.log("Values", values);
             axios
               .post(
-                "https://block-party-calendar.herokuapp.com/api/users/register",
+                "https://block-party-calendar.herokuapp.com/api/users/login",
                 values
               )
               .then(response => {
                 console.log("POST response", response);
+                setToNext(true);
               })
               .catch(err => console.log("Submit failure", err));
           }}
         >
           {({ errors, handleChange, touched }) => (
             <Form className={classes.form}>
+              {toNext ? <Redirect to="/" /> : null}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
                     error={errors.username && touched.username}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
@@ -101,6 +115,7 @@ const SignIn = () => {
                 <Grid item xs={12}>
                   <TextField
                     error={errors.password && touched.password}
+                    className={classes.input}
                     variant="outlined"
                     fullWidth
                     onChange={handleChange}
