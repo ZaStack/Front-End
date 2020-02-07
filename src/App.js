@@ -32,9 +32,6 @@ function App() {
             <Route exact path="/">
               <SignIn />
             </Route>
-            <Route path="/signin">
-              <SignIn />
-            </Route>
             <Route path="/signup">
               <SignUp />
             </Route>

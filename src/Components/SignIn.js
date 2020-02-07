@@ -92,7 +92,7 @@ const SignIn = () => {
         >
           {({ errors, handleChange, touched }) => (
             <Form className={classes.form}>
-              {toNext ? <Redirect to="/" /> : null}
+              {toNext ? <Redirect to="/eventlist" /> : null}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
