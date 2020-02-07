@@ -1,52 +1,50 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./App.css";
-import Header from "./Components/Header";
-import SignUp from "./Components/SignUp";
-import SignIn from "./Components/SignIn";
-import EventList from "./Components/EventList";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#FF7518"
-    },
-    secondary: {
-      main: "#F8F7DC"
-    },
-    info: {
-      main: "#E8E8E8"
-    }
+
+
+
+
+
+const App = () => {
+  const usersData = [
+    { id: 1, name: 'D&D night', username: 'Dragon Pug, FL', height: 'Firday Night 9pm' },
+    { id: 2, name: 'Movie Night', username: 'My house, CA', height: 'Saturday Night 8pm' },
+    { id: 3, name: 'Taco Tuesday', username: 'TacoPlace, TX', height: 'Tuesday 1:30pm' },
+  ]
+
+
+  const [users, setUsers] = useState(usersData)
+
+  const addUser = user => {
+    user.id = users.length + 1
+    setUsers([...users, user])
   }
-});
 
-function App() {
+  const deleteUser = id => {
+    setUsers(users.filter(user => user.id !== id))
+    
+  }
+
+  const editRow = user => {
+    setEditing(true)
+  
+    setCurrentUser({ id: user.id, name: user.name, username: user.username, height: user.height})
+  }
+
+  const updateUser = (id, updatedUser) => {
+    setEditing(false)
+  
+    setUsers(users.map(user => (user.id === id ? updatedUser : user)))
+  }
+  
+
+  const [editing, setEditing] = useState(false)
+  const initialFormState = { id: null, name: '', username: '', height: ''}
+  const [currentUser, setCurrentUser] = useState(initialFormState)
+
+
+  
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <div className="App">
-          <Header />
-          <Switch>
-            <Route exact path="/">
-              <SignIn />
-            </Route>
-            <Route path="/signin">
-              <SignIn />
-            </Route>
-            <Route path="/signup">
-              <SignUp />
-            </Route>
-            <Route path="/account"></Route>
-            <Route path="/eventlist">
-              <EventList />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    </ThemeProvider>
-  );
+
 }
 
-export default App;
+export default App
