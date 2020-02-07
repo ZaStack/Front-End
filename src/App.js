@@ -48,16 +48,11 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(initialFormState)
 
 
-
-
-
-
-
-
   
   return (
+
     <div className="container">
-			<h1>CRUD App with Hooks</h1>
+			<h1>BlockClubCalander</h1>
 			<div className="flex-row">
 				<div className="flex-large">
 					{editing ? (
