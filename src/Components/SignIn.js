@@ -1,14 +1,37 @@
 import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+import { Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import {
+  Container,
+  Typography,
+  Grid,
+  TextField,
+  CssBaseline,
+  Button
+} from "@material-ui/core";
 
-const axios = require("axios");
+import { Formik, Form } from "formik";
+import * as yup from "yup";
+import axios from "axios";
+
+let SigninSchema = yup.object().shape({
+  username: yup
+    .string()
+    .min(4, "Username is too short.")
+    .required("This field is required"),
+  password: yup
+    .string()
+    .min(6, "Password is too short.")
+    .max(20, "Password is too long.")
+    .required("This field is required.")
+});
 
 const useStyles = makeStyles(theme => ({
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.common.white
+    }
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
@@ -16,95 +39,114 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center"
   },
   avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    margin: theme.spacing(1)
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(3)
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    color: "#F8F7DC",
-    backgroundColor: "#FF7518",
-    borderRadius: "10px"
+    color: theme.palette.secondary.main,
+    borderRadius: 10
+  },
+  input: {
+    backgroundColor: theme.palette.info.main
+  },
+  pageTitle: {
+    marginTop: 16
   }
 }));
 
-export default function SignIn(props) {
+const SignIn = () => {
   const classes = useStyles();
-  const [creds, setCreds] = useState({
-    username: "",
-    password: ""
-  });
-  console.log("entryHandler", creds);
-
-  const entryHandler = e => {
-    let value = e.target.value;
-    setCreds({
-      ...creds,
-      [e.target.name]: value
-    });
-  };
-
-  const FormSubmit = e => {
-    e.preventdefault();
-    axios
-      .post("https://block-party-calendar.herokuapp.com/api/users/login")
-      .then(response => {
-        console.log("login", response);
-      })
-      .catch(error => {
-        console.log("login Error", error);
-        return <h3>Username/Password Incorrect</h3>;
-      });
-  };
+  const [toNext, setToNext] = useState(false);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Typography variant="h4" className={classes.pageTitle}>
+        Login Page
+      </Typography>
       <div className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} onSubmit={FormSubmit} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            value={creds.username}
-            onChange={entryHandler}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={creds.password}
-            onChange={entryHandler}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-        </form>
+        <Typography>Please enter your information below to login.</Typography>
+        <Formik
+          initialValues={{
+            username: "",
+            password: ""
+          }}
+          validationSchema={SigninSchema}
+          onSubmit={values => {
+            console.log("Values", values);
+            axios
+              .post(
+                "https://block-party-calendar.herokuapp.com/api/users/login",
+                values
+              )
+              .then(response => {
+                console.log("POST response", response);
+                setToNext(true);
+              })
+              .catch(err => console.log("Submit failure", err));
+          }}
+        >
+          {({ errors, handleChange, touched }) => (
+            <Form className={classes.form}>
+              {toNext ? <Redirect to="/" /> : null}
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    error={errors.username && touched.username}
+                    className={classes.input}
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="lname"
+                    helperText={
+                      errors.username && touched.username
+                        ? errors.username
+                        : null
+                    }
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error={errors.password && touched.password}
+                    className={classes.input}
+                    variant="outlined"
+                    fullWidth
+                    onChange={handleChange}
+                    id="password"
+                    type="password"
+                    label="Password"
+                    name="password"
+                    autoComplete="password"
+                    helperText={
+                      errors.password && touched.password
+                        ? errors.password
+                        : null
+                    }
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </Container>
   );
-}
+};
+
+export default SignIn;
