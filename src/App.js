@@ -1,10 +1,4 @@
-import logo from "./logo.svg";
-import React, { useState, Fragment } from 'react'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
-import "./App.css";
-import UserTable from './tables/UserTable'
-import AddUserForm from './forms/AddUserForm.js'
-import EditUserForm from './forms/EditUserForm.js'
+
 
 
 
@@ -51,34 +45,6 @@ const App = () => {
   
   return (
 
-    <div className="container">
-			<h1>BlockClubCalander</h1>
-			<div className="flex-row">
-				<div className="flex-large">
-					{editing ? (
-						<Fragment>
-							<h2>Edit user</h2>
-							<EditUserForm
-								editing={editing}
-								setEditing={setEditing}
-								currentUser={currentUser}
-								updateUser={updateUser}
-							/>
-						</Fragment>
-					) : (
-						<Fragment>
-							<h2>Add user</h2>
-							<AddUserForm addUser={addUser} />
-						</Fragment>
-					)}
-				</div>
-				<div className="flex-large">
-					<h2>View users</h2>
-					<UserTable users={users} editRow={editRow} deleteUser={deleteUser} />
-				</div>
-			</div>
-		</div>
-	)
 }
 
 export default App
