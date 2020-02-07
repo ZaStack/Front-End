@@ -1,2 +1,3 @@
-# Front-End
-Front-End Team
+# BlockClub Calendar
+
+Build with React, Formik, and Yup
